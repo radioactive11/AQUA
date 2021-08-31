@@ -40,7 +40,7 @@ const InputContainer = styled.div`
 `
 
 const InputLabel = styled.h1`
-	color: #41454a;
+	color: #d6d6d6;
 	font-size: 1.5rem !important;
 	font-weight: 700;
 `
@@ -62,12 +62,12 @@ const SubmitBtn = styled.button`
 	align-items:center;
 	padding: 0.75rem 1rem;
 	border-radius:10px;
-	border: 3px solid #F4AA1F;
-	background: #fdfaf2;
 	text-transform: uppercase;
 	font-size: 1rem;
 	font-weight: 700;
-	color: #F4AA1F;
+	border: 3px solid #69ff80;
+    background: #1b2c30;
+	color: #69ff80;
 	outline:none;
 `
 

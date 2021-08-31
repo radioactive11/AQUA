@@ -45,14 +45,14 @@ const InputContainer = styled.div`
 `;
 
 const InputLabel = styled.h1`
-	color: #41454a;
+	color: #d6d6d6;
 	font-size: 1.5rem !important;
 	font-weight: 700;
 `;
 
 const TextInput = styled.input`
 	padding: 0.75rem 1rem;
-	margin: 1rem 2rem 1rem 2rem;
+	margin: 1rem 2rem 1rem 0;
 	border-radius: 10px;
 	border: 3px solid #249bd4;
 	background: #def7ff;
@@ -65,45 +65,56 @@ const TextInput = styled.input`
 const SubmitBtn = styled.button`
 	display: flex;
 	align-items: center;
+	justify-content:center;
 	padding: 0.75rem 1rem;
 	border-radius: 10px;
-	border: 3px solid #f4aa1f;
-	background: #fdfaf2;
 	text-transform: uppercase;
 	font-size: 1rem;
 	font-weight: 700;
-	color: #f4aa1f;
 	outline: none;
+	border: 3px solid #69ff80;
+    background: #1b2c30;
+	color: #69ff80;
 `;
 
 const CloseButton = styled.button`
 	display: flex;
 	align-items: center;
-	padding: 0.75rem 1rem;
-	border-radius: 10px;
+	justify-content:center;
+	padding: 0.75rem;
+	border-radius: 1000rem;
+	line-height:1rem;
 	border: 3px solid #e53935;
 	background: #ffcdd2;
 	text-transform: uppercase;
-	font-size: 1rem;
+	font-size:0.8rem;
 	font-weight: 700;
 	color: #e53935;
+	position: relative;
 	outline: none;
+	justify-self:flex-end;
+	width:25px;
+	height:25px;
 `;
 
 const AddButton = styled.button`
 	display: flex;
 	align-items: center;
-	padding: 0.75rem 1rem;
-	border-radius: 10px;
+	justify-content:center;
+	padding: 0.75rem;
+	border-radius: 1000rem;
+	line-height:1.1rem;
 	border: 3px solid #00c853;
 	background: #b9f6ca;
 	text-transform: uppercase;
 	font-size: 1rem;
 	font-weight: 700;
 	color: #00c853;
-	left: 5vw;
 	position: relative;
 	outline: none;
+	margin-left:auto;
+	width:25px;
+	height:25px;
 `;
 
 const StyledFileCopyIcon = styled(FileCopyIcon)`
@@ -111,13 +122,13 @@ const StyledFileCopyIcon = styled(FileCopyIcon)`
 `;
 
 const BackButtonIcon = styled(BackButton)`
-	margin : 2rem 0 0 2rem;
-`
+	margin: 2rem 0 0 2rem;
+`;
 
 const InputWrapper = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-between;
 	flex-direction: column;
 `;
 
@@ -180,12 +191,12 @@ const CardTitle = styled.div`
 `;
 
 const Keyword = styled.span`
-	margin-left:1vw;
+	margin-left: 1vw;
 `;
 
 const Group = styled.div`
 	display: flex;
-	margin-left:1vw;
+	margin-left: 1vw;
 	align-items: center;
 	justify-content: center;
 `;
@@ -244,13 +255,18 @@ const Option = styled.option`
 	border: 0px;
 `;
 
+const StyledInputGroup = styled(InputGroup)`
+	flex: 1;
+    width: 100%;
+`
+
 const Keywords = () => {
 	const [result, setResult] = useState([]);
 	const [options, setOptions] = useState(null);
 	const [selectedValue, setSelectedValue] = useState("");
 	const [fields, setFields] = useState([{ value: null }]);
 	const [loading, setLoading] = useState(false);
-	const [fetching,setFetching] = useState(false);
+	const [fetching, setFetching] = useState(false);
 
 	const handleChange = (i, event) => {
 		const values = [...fields];
@@ -307,6 +323,14 @@ const Keywords = () => {
 			.then((res) => {
 				setFetching(false);
 				setOptions(res.data.response.assignments);
+				setSelectedValue(
+					`${res.data.response.assignments[0].title} ${
+						res.data.response.assignments[0].assignmentGiven
+							.split("/")
+							.pop()
+							.split(".")[0]
+					}`
+				);
 			})
 			.catch((err) => {
 				window.alert("Error fetching assignments");
@@ -321,9 +345,7 @@ const Keywords = () => {
 				<AssignmentsContainer>
 					<Group>
 						<BackButtonIcon onClick={() => setResult([])} />
-						<Heading>
-							Keywords Checker
-						</Heading>
+						<Heading>Keywords Checker</Heading>
 					</Group>
 					<Flexbreak />
 					{result.map((item, index) => (
@@ -338,7 +360,7 @@ const Keywords = () => {
 									theme="primary">
 									<PaperIcon />
 									<Group>
-										Present : 
+										Present :
 										{Object.values(item).map(
 											(value, i) =>
 												value === "true" && (
@@ -352,7 +374,7 @@ const Keywords = () => {
 								<KeywordsContainer theme="warning">
 									<PaperIcon />
 									<Group>
-										Absent : 
+										Absent :
 										{Object.values(item).map(
 											(value, i) =>
 												value === "false" && (
@@ -370,13 +392,13 @@ const Keywords = () => {
 			) : (
 				<InputContainer>
 					<InputWrapper>
-						<InputGroup>
+						<StyledInputGroup>
 							<InputLabel>Enter Keywords</InputLabel>
 							<AddButton onClick={() => handleAdd()}>+</AddButton>
-						</InputGroup>
+						</StyledInputGroup>
 						{fields.map((field, idx) => {
 							return (
-								<InputGroup key={`${field}-${idx}`}>
+								<StyledInputGroup key={`${field}-${idx}`}>
 									<TextInput
 										type="text"
 										value={field.value}
@@ -384,15 +406,19 @@ const Keywords = () => {
 									/>
 									<CloseButton
 										onClick={() => handleRemove(idx)}>
-										X
+										&#10006;
 									</CloseButton>
-								</InputGroup>
+								</StyledInputGroup>
 							);
 						})}
 					</InputWrapper>
 
 					<InputWrapper>
-						<InputLabel>{fetching ? "Fetching Assignments" : "Select Assignment"}</InputLabel>
+						<InputLabel>
+							{fetching
+								? "Fetching Assignments"
+								: "Select Assignment"}
+						</InputLabel>
 						<Select
 							onChange={(e) => {
 								setSelectedValue(e.target.value);
@@ -415,7 +441,7 @@ const Keywords = () => {
 													.split(".")[0]
 											}`}
 										</Option>
-								  ))
+									))
 								: ""}
 						</Select>
 					</InputWrapper>

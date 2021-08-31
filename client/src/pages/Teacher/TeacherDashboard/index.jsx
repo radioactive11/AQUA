@@ -28,16 +28,15 @@ const Wrapper = styled.div`
 	top: 50%;
 	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
-	height: 100vh;
-	width: 100vw;
+	height: 95vh;
+	width: 90vw;
 	background: white;
-	font-family: "Open Sans", sans-serif !important;
+	font-family: "Open Sans",sans-serif !important;
 	font-size: 0.75rem !important;
-	color: #333333;
-	border-radius: 20px;
-	overflow: hidden;
-	box-shadow: 20px 20px 60px #b4b8c7, -20px -20px 60px #f4f8ff;
-	@media (max-width: 1224px) {
+	color: #A4B4CB;
+	border-radius: 0.5rem;
+	overflow:hidden;
+	@media (max-width: 1224px){
 		height: 100vh;
 		width: 100vw;
 		border-radius: 0;
@@ -48,15 +47,16 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	background: #1E1D2B;
 
 	.title {
-		flex: 1;
+		flex:1;
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		border-bottom: 1px solid #eaeaea;
-		border-right: 1px solid #eaeaea;
-		@media (max-width: 1224px) {
+		align-items:center;
+		justify-content:center;
+		border-bottom: 1px solid #2E3446;
+		border-right: 1px solid #2E3446;
+		@media (max-width: 1224px){
 			border-right: none;
 		}
 	}
@@ -64,46 +64,46 @@ const Container = styled.div`
 	.navbar {
 		flex: 4;
 		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		border-bottom: 1px solid #eaeaea;
+		align-items:center;
+		justify-content:space-between;
+		border-bottom: 1px solid #2E3446;
 	}
 
 	.sidepanel {
 		flex: 1;
 		display: flex;
-		align-items: center;
-		justify-content: flex-start;
+		align-items:center;
+		justify-content:flex-start;
 		flex-direction: column;
 		flex-wrap: wrap;
-		position: relative;
-		border-right: 1px solid #eaeaea;
+		position:relative;
+		background:#252736;
+		border-right: 1px solid #2E3446;
 		transition: all 0.2s ease-in-out;
-		.active {
-			color: #505050;
-			background: #f2f4f9;
+		.active{
+			color: #4d8fd9;
+			background: #37384a;
 		}
-		@media (max-width: 1224px) {
+		@media (max-width: 1224px){
 			position: absolute;
-			flex-wrap: nowrap;
-			left: 0;
-			background: white;
-			height: 100%;
-			min-width: 50%;
-			box-shadow: 0px 20px 10px #b4b8c794;
+			flex-wrap:nowrap;
+			left:0;
+			background: #252736;
+			height:100%;
+			min-width:50%;
+			box-shadow:  0px 20px 10px #b4b8c794;
 		}
 	}
 
 	.content {
-		flex: 4;
-		background: #eff0f4;
+		flex:4;
 		height: 100%;
 	}
 
-	.closed {
+	.closed{
 		// display:none;
-		left: -500px;
-		box-shadow: none;
+		left:-500px;
+		box-shadow:  none;
 	}
 `;
 
@@ -266,20 +266,20 @@ const SidePanelMember = styled(NavLink)`
 	margin: 1rem;
 	padding: 0.5rem;
 	text-transform: capitalize;
-	font-weight: bold;
+	font-weight:bold;
 	font-size: 1rem;
-	color: gray;
+	color:#A4B4CB;
 	transition: all 0.2s ease;
-	&:hover {
-		cursor: pointer;
-		color: #505050;
-		background: #f7f9ff;
-		text-decoration: none;
+	&:hover{
+		cursor:pointer;
+		color: #0A68D3;
+		background: #2F3042;
+		text-decoration:none;
 	}
-	@media (max-width: 1224px) {
-		margin: 1rem 2rem;
+	@media (max-width: 1224px){
+		margin:1rem 2rem;
 	}
-`;
+`
 
 const StyledKeyboardIcon = styled(KeyboardIcon)`
 	margin: 0 1rem;

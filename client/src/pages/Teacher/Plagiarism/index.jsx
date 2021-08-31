@@ -179,16 +179,16 @@ const DescriptionText = styled.a`
 	color: inherit !important;
 	&:hover {
 		${(props) => {
-			if (props.theme === "primary") {
-				return `
+		if (props.theme === "primary") {
+			return `
 				color: #DF9B1C !important;;
 			`;
-			} else {
-				return `
+		} else {
+			return `
 				color: #51AF4F !important;
 			`;
-			}
-		}}
+		}
+	}}
 	}
 `;
 
@@ -265,9 +265,14 @@ const Plagiarism = () => {
 	const apiUrl = process.env.REACT_APP_FLASK_API_URL;
 
 	const getResults = (e) => {
+		console.log("lol");
 		e.preventDefault();
 		setLoading(true);
+		console.log(selectedValue, "Select")
 		const splittedSelectedValue = selectedValue.split(" ");
+
+		console.log(splittedSelectedValue[0], splittedSelectedValue[1]);
+
 		Axios.post(`${apiUrl}/plag`, {
 			subject: splittedSelectedValue[0],
 			topic: splittedSelectedValue[1],
@@ -334,7 +339,7 @@ const Plagiarism = () => {
 										</ProgressBarLabel>
 										<ProgressBarContainer>
 											{parseFloat(threshold) <
-											parseFloat(sim_score) ? (
+												parseFloat(sim_score) ? (
 												<>
 													<StyledProgressBar
 														animated
@@ -394,22 +399,20 @@ const Plagiarism = () => {
 							value={selectedValue}>
 							{options
 								? options.map((item) => (
-										<Option
-											key={JSON.stringify(item)}
-											value={`${item.title} ${
-												item.assignmentGiven
-													.split("/")
-													.pop()
-													.split(".")[0]
+									<Option
+										key={JSON.stringify(item)}
+										value={`${item.title} ${item.assignmentGiven
+											.split("/")
+											.pop()
+											.split(".")[0]
 											}`}>
-											{`${item.title} ${
-												item.assignmentGiven
-													.split("/")
-													.pop()
-													.split(".")[0]
+										{`${item.title} ${item.assignmentGiven
+											.split("/")
+											.pop()
+											.split(".")[0]
 											}`}
-										</Option>
-								  ))
+									</Option>
+								))
 								: ""}
 						</Select>
 					</InputWrapper>

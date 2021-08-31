@@ -8,7 +8,7 @@ const Heading = styled.h1`
 	font-size: 1.5rem !important;
 	font-weight: 900;
 	margin: 2rem 0 1rem 0;
-	color: #41454a;
+	color: #d6d6d6;
 `;
 
 const Container = styled.div`
@@ -45,13 +45,13 @@ const UploadButton = styled.button`
 	align-items: center;
 	margin: 0 0 4rem 0;
 	padding: 1rem 1.75rem;
-	border-radius: 20px;
-	border: 3px solid #f4aa1f;
-	background: #fdfaf2;
+	border-radius: 20px;s
 	text-transform: uppercase;
 	font-size: 1rem;
 	font-weight: 700;
-	color: #f4aa1f;
+	border: 3px solid #69ff80;
+    background: #1b2c30;
+	color: #69ff80;
 `;
 
 const StyledPublishIcon = styled(PublishIcon)`
@@ -85,7 +85,7 @@ const TextLabel = styled.label`
 	padding: 0 1rem 0 0;
 	font-size: 1.25rem;
 	font-weight: 700;
-	color: #41454a;
+	color: #d6d6d6;
 	margin-bottom: 0;
 	margin-top:10vh;
 `;
@@ -101,7 +101,6 @@ const TextWrapper = styled.div`
 const Upload = () => {
 	const nodeApiUrl = process.env.REACT_APP_NODE_API_URL;
 	const { token } = useContext(UserContext);
-	
 	const [title, setTitle] = useState("");
 	const [desc, setDesc] = useState("");
 	const [loading,setLoading] = useState(false);

@@ -40,7 +40,7 @@ const InputContainer = styled.div`
 `
 
 const InputLabel = styled.h1`
-	color: #41454a;
+	color: #d6d6d6;
 	font-size: 1.5rem !important;
 	font-weight: 700;
 `
@@ -62,12 +62,12 @@ const SubmitBtn = styled.button`
 	align-items:center;
 	padding: 0.75rem 1rem;
 	border-radius:10px;
-	border: 3px solid #F4AA1F;
-	background: #fdfaf2;
 	text-transform: uppercase;
 	font-size: 1rem;
 	font-weight: 700;
-	color: #F4AA1F;
+	border: 3px solid #69ff80;
+    background: #1b2c30;
+	color: #69ff80;
 	outline:none;
 `
 
@@ -116,22 +116,23 @@ const Heading = styled.h1`
 const Quiz = () => {
 	const [question, setQuestion] = useState("");
 	const [questionsIsVisible, setQuestionsIsVisible] = useState(false);
-	const [qna,setQna] = useState([]);
-	const [loading,setIsLoading] = useState(false);
+	const [qna, setQna] = useState([]);
+	const [loading, setIsLoading] = useState(false);
 
-	const apiUrl = process.env.REACT_APP_API_URL;
+	const apiUrl = process.env.REACT_APP_FLASK_API_URL;
 
 	const submit = (e) => {
 		e.preventDefault();
 		setIsLoading(true);
-		Axios.post(`${apiUrl}/quiz`,{
+		Axios.post(`${apiUrl}/quiz`, {
 			keyword: question
 		}).then((res) => {
 			setQuestionsIsVisible(!questionsIsVisible);
 			setQna(res.data);
 			setIsLoading(false);
-			console.log(res.data,"data");
+			// console.log(res.data,"data");
 		}).catch((err) => {
+			window.alert("Network error");
 			setIsLoading(false);
 			console.log(err);
 		})
@@ -140,35 +141,35 @@ const Quiz = () => {
 	return (
 		<Container>
 			{questionsIsVisible
-			? (
-				<QuestionsWrapper>
-				<Heading>Quiz</Heading>
-				{qna.map((item,i)=>(
-					<QuestionsContainer key={i}>
-						<Question>
-							{item.question}
-						</Question>
-						<Answer>
-							{item.answer}
-						</Answer>
-					</QuestionsContainer>
-				))}
+				? (
+					<QuestionsWrapper>
+						<Heading>Quiz</Heading>
+						{qna.map((item, i) => (
+							<QuestionsContainer key={i}>
+								<Question>
+									{item.question}
+								</Question>
+								<Answer>
+									{item.answer}
+								</Answer>
+							</QuestionsContainer>
+						))}
 
-				<SubmitBtn onClick={e => setQuestionsIsVisible(!questionsIsVisible)}>change</SubmitBtn>
-				</QuestionsWrapper>
-			)
-			:(
-			<InputContainer>
-				<InputLabel>
-					Enter Topic
+						<SubmitBtn onClick={e => setQuestionsIsVisible(!questionsIsVisible)}>change</SubmitBtn>
+					</QuestionsWrapper>
+				)
+				: (
+					<InputContainer>
+						<InputLabel>
+							Enter Topic
 				</InputLabel>
-				<TextInput type="text" value={question} onChange={e => {
-					e.preventDefault();
-					setQuestion(e.target.value);
-				}}/>
-				<SubmitBtn onClick={(e) => submit(e)}>{loading ? "Generating Quiz" : "Submit"}</SubmitBtn>
-			</InputContainer>
-			)}
+						<TextInput type="text" value={question} onChange={e => {
+							e.preventDefault();
+							setQuestion(e.target.value);
+						}} />
+						<SubmitBtn onClick={(e) => submit(e)}>{loading ? "Generating Quiz" : "Submit"}</SubmitBtn>
+					</InputContainer>
+				)}
 		</Container>
 	)
 }

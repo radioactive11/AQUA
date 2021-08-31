@@ -49,7 +49,7 @@ const Heading = styled.h1`
 	font-size: 1.5rem !important;
 	font-weight: 900;
 	margin: 2rem 0 0 2rem;
-	color: #41454a;
+	color: #d6d6d6;
 `;
 
 const Flexbreak = styled.div`

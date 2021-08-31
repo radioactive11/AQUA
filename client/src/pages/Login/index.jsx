@@ -6,6 +6,9 @@ import EmailIcon from "../../svg/EmailIcon";
 import PasswordIcon from "../../svg/PasswordIcon";
 import Axios from "axios";
 import UserContext from "../../contexts/User/UserContext";
+import LoginButton from "../../elements/LoginButton";
+import { useAuth0 } from "@auth0/auth0-react";
+import LogoutButton from "../../elements/LogoutButton";
 
 const Wrapper = styled.section`
 	display: flex;
@@ -328,6 +331,8 @@ const Homepage = () => {
 	// eslint-disable-next-line
 	const { token, login, user } = useContext(UserContext);
 
+	const { isAuthenticated } = useAuth0();
+
 	const [isTeacher, setIsTeacher] = useState(false);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -398,15 +403,14 @@ const Homepage = () => {
 							Aqua
 						</StyledBrandLink>
 					</BrandHeading>
-					{token ? (
+					{isAuthenticated ? (
 						<>
 							<LinkContainer
 								onClick={() =>
 									history.push(
-										`/${
-											user.userType === "teacher"
-												? `teacher`
-												: `student`
+										`/${user.type === "teacher"
+											? `teacher`
+											: `student`
 										}`
 									)
 								}>
@@ -485,14 +489,15 @@ const Homepage = () => {
 										/>
 									</InputContainer>
 								</CardBody>
-								<PrimaryButton
+								{/* <PrimaryButton
 									onClick={() => {
 										isTeacher
 											? loginTeacher()
 											: loginStudent();
 									}}>
 									Login
-								</PrimaryButton>
+								</PrimaryButton> */}
+								{!isAuthenticated ? <LoginButton /> : <LogoutButton />}
 							</Card>
 						</CardsContainer>
 					</SectionOne>
