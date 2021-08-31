@@ -7,89 +7,83 @@ const jwt = require("jsonwebtoken");
 const Assignments = require("../models/Assignments");
 const Notice = require("../models/Notices");
 
-// @desc register student
-// @route POST /signup
-// @access PUBLIC
-
-module.exports.signup = asyncHandler(async (req, res, next) => {
-    const { name, email, password, _id } = req.body;
-
-    //Checking if the student is already registered
-    const student = await Student.findOne({ email });
-
-    if (student) {
-        return next(
-            new ErrorResponse("Student with that email already exists", 400)
-        );
-    }
-
-    //If not , then save the student
-    const hashedPass = await bcrypt.hash(password, 10);
-
-    let assignments = [];
-    let notices = [];
-
-    const savedAssignments = await Assignments.find({});
-    const savedNotices = await Notice.find({});
-
-    savedAssignments.map((assignment) => {
-        assignments.push(assignment._id);
-    });
-
-    savedNotices.map((notice) => {
-        notices.push(notice._id);
-    });
-
-    const newStudent = new Student({
-        _id,
-        name,
-        email,
-        password: hashedPass,
-        assignments,
-        notices,
-    });
-
-    const savedStudent = await newStudent.save();
-
-    sendResponse(savedStudent, "Student registered Successfully", res);
-});
 
 // @desc login student
 // @route POST /signin
 // @access PUBLIC
 
-module.exports.signin = asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
+module.exports.signin = asyncHandler(async(req,res,next) => {
+    const {name,email} = req.body;
     const secret = process.env.JWT_SECRET;
 
-    //Checking if students has registered or not
-    const student = await Student.findOne({ email });
-
-    if (!student) {
-        return next(new ErrorResponse("Student is not registered", 400));
-    }
-
-    const isMatch = await bcrypt.compare(password, student.password);
-
-    if (isMatch) {
-        const token = jwt.sign(
-            {
-                _id: student._id,
+    const student = await Student.findOne({
+        email
+    }).populate({
+            path: "assignments",
+            populate: {
+                path: "givenBy",
             },
-            secret
-        );
-
-        // const { _id, name, email, type } = student;
-        // : { _id, name, email, password, type },
-
-        res.json({
-            token,
-            student,
+        })
+        .populate({
+            path: "notices",
+            populate: {
+                path: "givenBy",
+            },
         });
-    } else {
-        return next(new ErrorResponse("Sorry, Incorrect Email/Password", 400));
+
+    if(student){
+        const token = jwt.sign({
+            _id:student._id
+        },secret);
+
+        res.status(200).json({
+            student,
+            token
+        })
     }
-});
+    else{
+        //If loginning first time then save the user in the db
+        let assignments = [];
+        let notices = [];
+
+        const savedAssignments = await Assignments.find({});
+        const savedNotices = await Notice.find({});
+
+        savedAssignments.map((assignment) => {
+            assignments.push(assignment._id);
+        });
+
+        savedNotices.map((notice) => {
+            notices.push(notice._id);
+        });
+
+        const newStudent = new Student({
+            name,
+            email,
+            assignments,
+            notices,
+        });
+
+        newStudent
+            .save()
+            .then((student) => {
+                const token = jwt.sign(
+                {
+                    _id: student._id,
+                },  
+                    secret
+                );
+
+                res.status(200).json({
+                    user:student,
+                    token
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+})
 
 // @desc dashboard
 // @route GET /dashboard

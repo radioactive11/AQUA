@@ -4,10 +4,6 @@ const schema = mongoose.Schema;
 const { ObjectId } = mongoose.Schema.Types;
 
 const studentSchema = new schema({
-    _id: {
-        type: Number,
-        required: [true, "Please add a registration Number"],
-    },
     name: {
         type: String,
         required: [true, "Please add a name"],
@@ -20,11 +16,9 @@ const studentSchema = new schema({
             "Please enter a valid email",
         ],
     },
-    password: {
-        type: String,
-        required: [true, "Please add a password"],
-        minlength: 6,
-    },
+    photo:{
+        type:String
+    },  
     assignments: [
         {
             type: ObjectId,

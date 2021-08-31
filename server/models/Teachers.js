@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Assignments = require("./Assignments");
 const schema = mongoose.Schema;
 
 const { ObjectId } = mongoose.Schema.Types;
@@ -9,13 +8,16 @@ const teacherSchema = new schema({
         type: String,
         required: true,
     },
-    phone: {
-        type: Number,
-        required: [true, "Please enter a phone number"],
-        match: [
-            /^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/,
-            "Please enter a valid phone number",
-        ],
+    // phone: {
+    //     type: Number,
+    //     required: [true, "Please enter a phone number"],
+    //     match: [
+    //         /^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/,
+    //         "Please enter a valid phone number",
+    //     ],
+    // },
+    photo:{
+        type:String,
     },
     email: {
         type: String,
@@ -25,11 +27,11 @@ const teacherSchema = new schema({
             "Please enter a valid email",
         ],
     },
-    password: {
-        type: String,
-        required: [true, "Please add a password"],
-        min: [6, "Password should be of atleast 6 charachters"],
-    },
+    // password: {
+    //     type: String,
+    //     required: [true, "Please add a password"],
+    //     min: [6, "Password should be of atleast 6 charachters"],
+    // },
     notices: [
         {
             type: ObjectId,

@@ -5,73 +5,65 @@ const bcrypt = require("bcrypt");
 const sendResponse = require("../utils/sendResponse");
 const jwt = require("jsonwebtoken");
 
-// @desc register teacher
-// @route POST /signup
-// @access PUBLIC
-
-module.exports.signup = asyncHandler(async (req, res, next) => {
-    const { name, email, password, phone } = req.body;
-
-    //Checking if the teacher is already registered
-    const teacher = await Teacher.findOne({ email });
-
-    if (teacher) {
-        return next(
-            new ErrorResponse("Teacher with that email already exists", 400)
-        );
-    }
-
-    //If not , then save the student
-    const hashedPass = await bcrypt.hash(password, 10);
-
-    const newTeacher = new Teacher({
-        name,
-        email,
-        phone,
-        password: hashedPass,
-    });
-
-    const savedTeacher = await newTeacher.save();
-
-    sendResponse(savedTeacher, "Teacher registered Successfully", res);
-});
-
 // @desc login teacher
 // @route POST /signin
 // @access PUBLIC
 
-module.exports.signin = asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
+module.exports.signin = asyncHandler(async(req,res) => {
+    const {name,email} = req.body;
     const secret = process.env.JWT_SECRET;
 
-    //Checking if teacher has registered or not
-    const teacher = await Teacher.findOne({ email });
+    const teacher = await Teacher.findOne({
+        email
+    }).populate({
+            path: "assignments",
+            populate: {
+                path: "assignmentsSubmitted.givenBy",
+            },
+        })
+        .populate("notices");
 
-    if (!teacher) {
-        return next(new ErrorResponse("Teacher is not registered", 400));
+    if(teacher){
+        const token = jwt.sign({
+            _id:teacher._id
+        },
+        secret);
+
+        res.status(200).json({
+            teacher,
+            token
+        })
     }
+    else{
+        //If loginning first time then save the user in the db
 
-    const isMatch = await bcrypt.compare(password, teacher.password);
+        const newTeacher = new Teacher({
+            name,
+            email,
+        });
 
-    if (isMatch) {
-        const token = jwt.sign(
+        newTeacher
+        .save()
+        .then((teacher) => {
+            const token = jwt.sign(
             {
                 _id: teacher._id,
-            },
-            secret
-        );
+            },  
+                secret
+            );
 
-        // const { _id, name, email, phone, type } = teacher;
-        // : { _id, name, email, phone, type },
-
-        res.json({
-            token,
-            teacher,
+            res.status(200).json({
+                user:teacher,
+                token
+            })
+        })
+        .catch((err) => {
+            console.log(err);
         });
-    } else {
-        return next(new ErrorResponse("Sorry, Incorrect Email/Password", 400));
-    }
-});
+    
+    }    
+})
+
 
 // @desc dashboard
 // @route GET /dashboard
