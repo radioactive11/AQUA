@@ -11,7 +11,7 @@ const Card = styled.div`
 	max-width: 40vw;
 	width:90%;
     cursor:pointer;
-	background: white;
+	background: #2B2C3E;
 	margin:  2rem;
 	${(props) => {
         if(props.modal) {
@@ -28,8 +28,8 @@ const Card = styled.div`
     padding: 2rem;
 	border-radius: 10px;
 	user-select:none;
-	box-shadow:  9px 9px 23px #e3e7ec,
-				-9px -9px 23px #e3e7ec;
+	box-shadow:  2px 2px 23px rgb(27 27 42),
+				-2px -2px 23px rgb(27 27 42);
 	display: flex;
 	flex-direction: column;
 	@media (max-width: 1224px){
@@ -77,8 +77,6 @@ const AssignedByText = styled.p`
 	font-weight: normal;
 	padding:0 1rem;
 	transition: all 0.2s ease;
-	&:hover{
-	}
 `
 
 const DescriptionText = styled.a`
@@ -115,7 +113,6 @@ const AssignmentCard = ({assignments,students,modal,submissions}) => {
 
     const onClickHandler = (item) => {
         //Ensuring that card in modal isnt clickable
-				
 		setAssignmentsSubmitted(item.assignmentsSubmitted);
         if(!modal){
             setShowModal(true);

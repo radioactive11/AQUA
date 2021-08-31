@@ -3,26 +3,27 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import styled from "styled-components";
 
 const Notice = styled.div`
-flex:1 1 30%;
-font-size: 1rem;
-font-weight:bold;
-width:90%;
-background: white;
-margin:  2rem;
-padding: 2rem;
-border-radius: 10px;
-box-shadow:  9px 9px 23px #e3e7ec,
-			-9px -9px 23px #e3e7ec;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-cursor:pointer;
-user-select:none;
-transition: all 0.2s ease;
-&:active{
-	box-shadow:  9px 9px 23px #ebeef2,
-				-9px -9px 23px #ebeef2;
-}
+	flex:1 1 30%;
+	font-size: 1rem;
+	font-weight:bold;
+	width:90%;
+	background: #2B2C3E;
+	margin:  2rem;
+	padding: 2rem;
+	color: white;
+	border-radius: 10px;
+	box-shadow:  2px 2px 23px rgb(27 27 42),
+				-2px -2px 23px rgb(27 27 42);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	cursor:pointer;
+	user-select:none;
+	transition: all 0.2s ease;
+	&:active{
+		box-shadow:  2px 2px 23px rgb(24 24 38),
+					-2px -2px 23px rgb(24 24 38);
+	}
 `
 
 const NoticeTitle = styled.div`
@@ -39,7 +40,7 @@ margin: 1rem 0;
 const NoticeAuthor = styled.div`
 display:flex;
 align-items:center;
-color: gray;
+color: #A4B4CB;
 `
 
 const NoticeAuthorText = styled.div`
@@ -74,9 +75,8 @@ const truncate = (text) => {
 						<NoticeAuthor>
 							<AccountCircleIcon />
 							<NoticeAuthorText>{item.givenBy.name}</NoticeAuthorText>
-						</NoticeAuthor>	
+						</NoticeAuthor>
 					) : null}
-					
 				</Notice>
 			))
 			}
